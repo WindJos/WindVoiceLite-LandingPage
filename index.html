@@ -1,109 +1,96 @@
-<!DOCTYPE html><html lang="fr" class="scroll-smooth">
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WindVoice - Gestion Quotidienne PME</title><!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>WindVoice - Gestion Quotidienne PME</title>
 
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-        darkMode: 'class',
-        theme: {
-            extend: {
-                fontFamily: {
-                    sans: ['Poppins', 'sans-serif'],
-                    cursive: ['Caveat', 'cursive'],
-                },
-                colors: {
-                    brand: {
-                        cream: '#F5F2E9',
-                        slate: '#5B5B67',
-                        darkBg: '#12121A',
-                        darkCard: '#1A1A24',
-                        deepText: '#2E2E38',
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        cursive: ['Caveat', 'cursive'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#F5F2E9',
+                            slate: '#5B5B67',
+                            darkBg: '#12121A',
+                            darkCard: '#1A1A24',
+                            deepText: '#2E2E38',
+                        }
+                    },
+                    boxShadow: {
+                        glass: '0 10px 30px rgba(0,0,0,0.12)',
+                        glow: '0 0 60px rgba(91, 91, 103, 0.18)'
                     }
-                },
-                boxShadow: {
-                    glass: '0 10px 30px rgba(0,0,0,0.12)',
-                    glow: '0 0 60px rgba(91, 91, 103, 0.18)'
                 }
             }
         }
-    }
-</script>
+    </script>
 
-<style>
-    :root {
-        --glass-light: rgba(255, 255, 255, 0.72);
-        --glass-dark: rgba(26, 26, 36, 0.68);
-        --glass-border-light: rgba(91, 91, 103, 0.12);
-        --glass-border-dark: rgba(255, 255, 255, 0.08);
-    }
+    <style>
+        :root {
+            --glass-light: rgba(255, 255, 255, 0.72);
+            --glass-dark: rgba(26, 26, 36, 0.68);
+            --glass-border-light: rgba(91, 91, 103, 0.12);
+            --glass-border-dark: rgba(255, 255, 255, 0.08);
+        }
 
-    html, body {
-        min-height: 100%;
-    }
+        html, body { min-height: 100%; }
 
-    body {
-        font-family: 'Poppins', sans-serif;
-        transition: background-color 300ms ease, color 300ms ease;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 300ms ease, color 300ms ease;
+        }
 
-    .font-cursive {
-        font-family: 'Caveat', cursive;
-    }
+        .font-cursive { font-family: 'Caveat', cursive; }
 
-    .glass-card {
-        background: var(--glass-light);
-        backdrop-filter: blur(8px) saturate(140%);
-        -webkit-backdrop-filter: blur(8px) saturate(140%);
-        border: 1px solid var(--glass-border-light);
-        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
-    }
+        .glass-card {
+            background: var(--glass-light);
+            backdrop-filter: blur(8px) saturate(140%);
+            -webkit-backdrop-filter: blur(8px) saturate(140%);
+            border: 1px solid var(--glass-border-light);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+        }
+        .dark .glass-card {
+            background: var(--glass-dark);
+            border: 1px solid var(--glass-border-dark);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+        }
 
-    .dark .glass-card {
-        background: var(--glass-dark);
-        border: 1px solid var(--glass-border-dark);
-        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
-    }
+        .glass-soft {
+            background: rgba(245, 242, 233, 0.56);
+            backdrop-filter: blur(8px) saturate(140%);
+            -webkit-backdrop-filter: blur(8px) saturate(140%);
+            border: 1px solid rgba(91, 91, 103, 0.08);
+        }
+        .dark .glass-soft {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
 
-    .glass-soft {
-        background: rgba(245, 242, 233, 0.56);
-        backdrop-filter: blur(8px) saturate(140%);
-        -webkit-backdrop-filter: blur(8px) saturate(140%);
-        border: 1px solid rgba(91, 91, 103, 0.08);
-    }
+        .soft-ring {
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 8px 30px rgba(0,0,0,0.08);
+        }
 
-    .dark .glass-soft {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-    }
+        .theme-icon  { display: block; }
+        .hidden-icon { display: none;  }
 
-    .soft-ring {
-        box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 8px 30px rgba(0,0,0,0.08);
-    }
+        .badge-light-text       { color: #2E2E38; }
+        .dark .badge-light-text { color: #12121A; }
 
-    .theme-icon {
-        display: block;
-    }
-
-    .hidden-icon {
-        display: none;
-    }
-
-    .badge-light-text {
-        color: #2E2E38;
-    }
-
-    .dark .badge-light-text {
-        color: #12121A;
-    }
-    
-    /* ─── Lignes SVG animées (fallback CSS) ─────── */
+        /* ─── Animations SVG fond ─── */
         @keyframes flowLine {
             0%   { stroke-dashoffset: 1000; opacity: 0; }
             10%  { opacity: 1; }
@@ -114,14 +101,6 @@
             0%, 100% { transform: translateY(0px) scale(1); }
             50%       { transform: translateY(-18px) scale(1.04); }
         }
-        @keyframes driftLeft {
-            0%   { transform: translateX(0) translateY(0); }
-            100% { transform: translateX(-60px) translateY(30px); }
-        }
-        @keyframes driftRight {
-            0%   { transform: translateX(0) translateY(0); }
-            100% { transform: translateX(60px) translateY(-30px); }
-        }
         @keyframes pulseGlow {
             0%, 100% { opacity: 0.18; }
             50%       { opacity: 0.38; }
@@ -130,124 +109,297 @@
             from { transform: rotate(0deg); }
             to   { transform: rotate(360deg); }
         }
-    
-</style>
 
+        /* ─── Modale ─── */
+        #download-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(10, 10, 18, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        #download-modal.active {
+            display: flex;
+        }
+
+        /* Animation d'entrée de la boîte modale */
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(28px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0)    scale(1);    }
+        }
+        #modal-box {
+            animation: modalIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* Champs du formulaire */
+        .form-input {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(91, 91, 103, 0.22);
+            background: rgba(255,255,255,0.65);
+            color: #2E2E38;
+            font-size: 0.85rem;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input:focus {
+            border-color: #5B5B67;
+            box-shadow: 0 0 0 3px rgba(91,91,103,0.12);
+        }
+        .dark .form-input {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.12);
+            color: #F5F2E9;
+        }
+        .dark .form-input:focus {
+            border-color: #F5F2E9;
+            box-shadow: 0 0 0 3px rgba(245,242,233,0.10);
+        }
+        .form-input::placeholder { color: rgba(91,91,103,0.45); }
+        .dark .form-input::placeholder { color: rgba(245,242,233,0.30); }
+
+        /* État de chargement du bouton submit */
+        #submit-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        /* Écran de succès */
+        #modal-success { display: none; }
+        #modal-success.active { display: flex; }
+    </style>
 </head>
 
-
+<!-- ─── Fond SVG animé ─── -->
 <canvas id="bg-canvas"></canvas>
-
-<!-- ─── Formes SVG statiques-animées (suppléments CSS) ──── -->
 <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden" id="svg-layer">
     <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
         <defs>
-            <!-- gradient lumineuse claire -->
             <linearGradient id="lg-light" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#F5F2E9" stop-opacity="0"/>
-                <stop offset="50%" stop-color="#9494A8" stop-opacity="0.5"/>
+                <stop offset="0%"   stop-color="#F5F2E9" stop-opacity="0"/>
+                <stop offset="50%"  stop-color="#9494A8" stop-opacity="0.5"/>
                 <stop offset="100%" stop-color="#F5F2E9" stop-opacity="0"/>
             </linearGradient>
-            <!-- gradient lumineuse sombre -->
             <linearGradient id="lg-dark" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#12121A" stop-opacity="0"/>
-                <stop offset="50%" stop-color="#7C7C96" stop-opacity="0.6"/>
+                <stop offset="0%"   stop-color="#12121A" stop-opacity="0"/>
+                <stop offset="50%"  stop-color="#7C7C96" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#12121A" stop-opacity="0"/>
             </linearGradient>
-
-            <!-- filtre flou pour orbites -->
             <filter id="glow-blur">
                 <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
                 <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
-            <filter id="soft-blur">
-                <feGaussianBlur stdDeviation="1.2"/>
-            </filter>
         </defs>
 
-        <!-- Silhouette visage (inspirée du logo) — fond gauche -->
-        <g class="logo-ghost" opacity="0.055" style="transform-origin:200px 420px;
-        animation: floatOrb 9s ease-in-out infinite;">
-            <path d="M 160 280
-                     C 120 290, 95 330, 100 380
-                     C 105 430, 115 460, 140 490
-                     C 155 510, 170 520, 175 530
-                     C 180 545, 165 555, 155 560
-                     C 200 560, 240 545, 245 520
-                     C 248 505, 235 490, 220 475
-                     C 240 450, 255 420, 258 390
-                     C 265 340, 245 290, 210 275
-                     Z"
-                  fill="#5B5B67"/>
-            <!-- nez -->
+        <!-- Silhouette visage fond gauche -->
+        <g opacity="0.055" style="transform-origin:200px 420px; animation: floatOrb 9s ease-in-out infinite;">
+            <path d="M 160 280 C 120 290, 95 330, 100 380 C 105 430, 115 460, 140 490 C 155 510, 170 520, 175 530 C 180 545, 165 555, 155 560 C 200 560, 240 545, 245 520 C 248 505, 235 490, 220 475 C 240 450, 255 420, 258 390 C 265 340, 245 290, 210 275 Z" fill="#5B5B67"/>
             <path d="M 175 400 C 168 410, 165 420, 168 428 C 172 436, 178 436, 178 436" fill="#5B5B67" opacity="0.6"/>
         </g>
 
-        <!-- Forme "W / V" — fond droite -->
+        <!-- Forme W/V fond droite -->
         <g opacity="0.05" style="transform-origin:1250px 480px; animation: floatOrb 11s ease-in-out infinite reverse;">
-            <path d="M 1100 340 L 1160 540 L 1220 420 L 1280 540 L 1340 340"
-                  fill="none" stroke="#5B5B67" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M 1100 340 L 1160 540 L 1220 420 L 1280 540 L 1340 340" fill="none" stroke="#5B5B67" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
 
-        <!-- Cercle orbital inspiré du cercle du logo -->
-        <circle cx="720" cy="450" r="310"
-                fill="none" stroke="url(#lg-dark)" stroke-width="0.8" opacity="0.18"
-                style="animation: spinSlow 80s linear infinite; transform-origin:720px 450px;"/>
-        <circle cx="720" cy="450" r="220"
-                fill="none" stroke="url(#lg-dark)" stroke-width="0.5" opacity="0.12"
-                style="animation: spinSlow 60s linear infinite reverse; transform-origin:720px 450px;"/>
+        <!-- Cercles orbitaux -->
+        <circle cx="720" cy="450" r="310" fill="none" stroke="url(#lg-dark)" stroke-width="0.8" opacity="0.18" style="animation: spinSlow 80s linear infinite; transform-origin:720px 450px;"/>
+        <circle cx="720" cy="450" r="220" fill="none" stroke="url(#lg-dark)" stroke-width="0.5" opacity="0.12" style="animation: spinSlow 60s linear infinite reverse; transform-origin:720px 450px;"/>
 
-        <!-- Lignes cursives traversantes (gauche → droite) -->
-        <path id="cl1" d="M -50 650 C 200 580, 450 700, 720 620 S 1100 500, 1490 580"
-              fill="none" stroke="url(#lg-dark)" stroke-width="1.2" stroke-dasharray="1400" stroke-dashoffset="1400"
-              opacity="0"
-              style="animation: flowLine 8s ease-in-out 0.5s infinite;"/>
+        <!-- Lignes traversantes -->
+        <path d="M -50 650 C 200 580, 450 700, 720 620 S 1100 500, 1490 580" fill="none" stroke="url(#lg-dark)" stroke-width="1.2" stroke-dasharray="1400" stroke-dashoffset="1400" opacity="0" style="animation: flowLine 8s ease-in-out 0.5s infinite;"/>
+        <path d="M -50 280 C 300 340, 600 200, 900 300 S 1300 380, 1490 260"  fill="none" stroke="url(#lg-dark)" stroke-width="0.9" stroke-dasharray="1400" stroke-dashoffset="1400" opacity="0" style="animation: flowLine 10s ease-in-out 2s infinite;"/>
+        <path d="M 1490 750 C 1200 680, 900 800, 600 720 S 200 660, -50 730"  fill="none" stroke="url(#lg-dark)" stroke-width="0.7" stroke-dasharray="1400" stroke-dashoffset="1400" opacity="0" style="animation: flowLine 12s ease-in-out 4s infinite;"/>
+        <path d="M -50 120 C 250 180, 550 80, 820 160 S 1200 220, 1490 100"   fill="none" stroke="url(#lg-dark)" stroke-width="0.6" stroke-dasharray="1200" stroke-dashoffset="1200" opacity="0" style="animation: flowLine 9s ease-in-out 6s infinite;"/>
 
-        <path id="cl2" d="M -50 280 C 300 340, 600 200, 900 300 S 1300 380, 1490 260"
-              fill="none" stroke="url(#lg-dark)" stroke-width="0.9" stroke-dasharray="1400" stroke-dashoffset="1400"
-              opacity="0"
-              style="animation: flowLine 10s ease-in-out 2s infinite;"/>
-
-        <path id="cl3" d="M 1490 750 C 1200 680, 900 800, 600 720 S 200 660, -50 730"
-              fill="none" stroke="url(#lg-dark)" stroke-width="0.7" stroke-dasharray="1400" stroke-dashoffset="1400"
-              opacity="0"
-              style="animation: flowLine 12s ease-in-out 4s infinite;"/>
-
-        <path id="cl4" d="M -50 120 C 250 180, 550 80, 820 160 S 1200 220, 1490 100"
-              fill="none" stroke="url(#lg-dark)" stroke-width="0.6" stroke-dasharray="1200" stroke-dashoffset="1200"
-              opacity="0"
-              style="animation: flowLine 9s ease-in-out 6s infinite;"/>
-
-        <!-- Spirale décorative coin bas-droite -->
-        <path d="M 1350 820 C 1380 780, 1400 730, 1380 690 C 1360 650, 1320 640, 1290 660 C 1260 680, 1250 720, 1270 750 C 1290 780, 1320 778, 1330 760"
-              fill="none" stroke="#7C7C96" stroke-width="0.7" opacity="0.12" stroke-linecap="round"
-              style="animation: floatOrb 13s ease-in-out 1s infinite;"/>
-
-        <!-- Petits points lumineux orbitaux -->
-        <circle cx="400" cy="200" r="1.5" fill="#9494A8" opacity="0.35" style="animation: pulseGlow 4s ease-in-out infinite;"/>
-        <circle cx="1050" cy="150" r="1" fill="#9494A8" opacity="0.28" style="animation: pulseGlow 5s ease-in-out 1s infinite;"/>
-        <circle cx="200" cy="700" r="1.2" fill="#9494A8" opacity="0.30" style="animation: pulseGlow 6s ease-in-out 2s infinite;"/>
+        <!-- Points orbitaux -->
+        <circle cx="400"  cy="200" r="1.5" fill="#9494A8" opacity="0.35" style="animation: pulseGlow 4s ease-in-out infinite;"/>
+        <circle cx="1050" cy="150" r="1"   fill="#9494A8" opacity="0.28" style="animation: pulseGlow 5s ease-in-out 1s infinite;"/>
+        <circle cx="200"  cy="700" r="1.2" fill="#9494A8" opacity="0.30" style="animation: pulseGlow 6s ease-in-out 2s infinite;"/>
         <circle cx="1300" cy="600" r="1.8" fill="#9494A8" opacity="0.25" style="animation: pulseGlow 4.5s ease-in-out 0.5s infinite;"/>
-        <circle cx="680" cy="850" r="1" fill="#9494A8" opacity="0.20" style="animation: pulseGlow 7s ease-in-out 3s infinite;"/>
+        <circle cx="680"  cy="850" r="1"   fill="#9494A8" opacity="0.20" style="animation: pulseGlow 7s ease-in-out 3s infinite;"/>
 
-        <!-- Arc coin haut-gauche -->
-        <path d="M 0 350 C 80 200, 220 120, 380 80"
-              fill="none" stroke="#7C7C96" stroke-width="0.6" opacity="0.10" stroke-linecap="round"
-              style="animation: flowLine 14s ease-in-out 3s infinite;"/>
-
-        <!-- Halo central léger -->
-        <ellipse cx="720" cy="450" rx="180" ry="160"
-                 fill="none" stroke="#5B5B67" stroke-width="0.4" opacity="0.08"
-                 style="animation: pulseGlow 8s ease-in-out infinite;"/>
+        <ellipse cx="720" cy="450" rx="180" ry="160" fill="none" stroke="#5B5B67" stroke-width="0.4" opacity="0.08" style="animation: pulseGlow 8s ease-in-out infinite;"/>
     </svg>
 </div>
 
 
+<!-- ════════════════════════════════════════════════
+     MODALE FORMULAIRE AVANT TÉLÉCHARGEMENT
+     ════════════════════════════════════════════════ -->
+<div id="download-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+    <!-- Boîte modale -->
+    <div id="modal-box" class="relative w-full max-w-md rounded-3xl glass-card border border-brand-slate/15 dark:border-white/10 shadow-2xl overflow-hidden">
+
+        <!-- Bouton fermer -->
+        <button id="modal-close"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-brand-slate/60 dark:text-slate-400 hover:text-brand-slate dark:hover:text-white hover:bg-brand-slate/10 dark:hover:bg-white/10 transition-all"
+            aria-label="Fermer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+
+        <!-- ── Formulaire ── -->
+        <div id="modal-form-section" class="p-7">
+            <div class="mb-5">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-slate/10 text-brand-slate dark:bg-white/10 dark:text-brand-cream mb-3">
+                    📥 Téléchargement WindVoice
+                </div>
+                <h2 id="modal-title" class="text-xl font-bold text-brand-slate dark:text-white">Une dernière étape</h2>
+                <p class="text-xs text-brand-slate/65 dark:text-slate-400 mt-1">
+                    Remplissez ce formulaire pour obtenir votre lien de téléchargement. Vos informations restent confidentielles.
+                </p>
+            </div>
+
+            <!--
+                ════════════════════════════════════════════════════════════
+                ACTION FORMSPREE — ÉTAPES DE CONFIGURATION :
+
+                1. Allez sur https://formspree.io et créez un compte gratuit
+                2. Cliquez "New Form", donnez-lui un nom (ex: "WindVoice Downloads")
+                3. Formspree vous génère une URL de ce type :
+                       https://formspree.io/f/XXXXXXXX
+                4. Remplacez "VOTRE_ID_FORMSPREE" ci-dessous par votre vrai ID
+                   Exemple : action="https://formspree.io/f/xpwzgkrd"
+
+                C'est TOUT. Formspree reçoit les données et vous les envoie
+                par email à l'adresse liée à votre compte.
+                ════════════════════════════════════════════════════════════
+            -->
+            <form
+                id="download-form"
+                action="https://formspree.io/f/VOTRE_ID_FORMSPREE"
+                method="POST"
+                novalidate>
+
+                <!-- Champ caché : plan sélectionné (rempli automatiquement par JS) -->
+                <input type="hidden" name="plan_selectionne" id="hidden-plan" value="Non précisé">
+
+                <!-- Champ caché anti-spam Formspree -->
+                <input type="text" name="_gotcha" style="display:none">
+
+                <!-- Redirection après envoi : on reste sur la page (géré en JS) -->
+                <!-- On utilise fetch() au lieu d'une soumission classique pour
+                     déclencher le téléchargement juste après l'envoi. -->
+
+                <div class="space-y-3">
+
+                    <!-- Nom complet -->
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-slate/80 dark:text-slate-300 mb-1" for="input-nom">
+                            Nom complet <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="input-nom" name="nom_complet"
+                            class="form-input" placeholder="Ex : Konaté Adama" required autocomplete="name">
+                    </div>
+
+                    <!-- Nom de l'entreprise -->
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-slate/80 dark:text-slate-300 mb-1" for="input-entreprise">
+                            Nom de l'entreprise <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="input-entreprise" name="entreprise"
+                            class="form-input" placeholder="Ex : Boutique Kaboré & Fils" required autocomplete="organization">
+                    </div>
+
+                    <!-- Ville -->
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-slate/80 dark:text-slate-300 mb-1" for="input-ville">
+                            Ville <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="input-ville" name="ville"
+                            class="form-input" placeholder="Ex : Ouagadougou, Bobo-Dioulasso…" required>
+                    </div>
+
+                    <!-- Numéro WhatsApp -->
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-slate/80 dark:text-slate-300 mb-1" for="input-whatsapp">
+                            Numéro WhatsApp <span class="text-red-500">*</span>
+                        </label>
+                        <input type="tel" id="input-whatsapp" name="whatsapp"
+                            class="form-input" placeholder="Ex : +226 70 00 00 00" required autocomplete="tel">
+                    </div>
+
+                    <!-- Email (optionnel) -->
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-slate/80 dark:text-slate-300 mb-1" for="input-email">
+                            Email <span class="text-brand-slate/40 dark:text-slate-500 font-normal">(facultatif)</span>
+                        </label>
+                        <input type="email" id="input-email" name="email"
+                            class="form-input" placeholder="votre@email.com" autocomplete="email">
+                    </div>
+
+                </div>
+
+                <!-- Message d'erreur de validation -->
+                <p id="form-error" class="hidden mt-3 text-xs text-red-500 font-medium">
+                    ⚠️ Veuillez remplir tous les champs obligatoires.
+                </p>
+
+                <!-- Bouton submit -->
+                <button type="submit" id="submit-btn"
+                    class="mt-5 w-full bg-brand-slate dark:bg-brand-cream text-white dark:text-brand-darkBg font-bold py-3 rounded-xl text-sm hover:opacity-90 transition-all shadow-md flex items-center justify-center gap-2">
+                    <span id="btn-text">📥 Obtenir mon lien de téléchargement</span>
+                    <svg id="btn-spinner" class="hidden w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                    </svg>
+                </button>
+
+                <p class="mt-3 text-center text-[10px] text-brand-slate/40 dark:text-slate-600">
+                    🔒 Vos données ne sont jamais revendues. Elles servent uniquement à la gestion des licences WindVoice.
+                </p>
+
+            </form>
+        </div>
+
+        <!-- ── Écran de succès (affiché après envoi réussi) ── -->
+        <div id="modal-success" class="p-7 flex-col items-center text-center">
+            <div class="w-16 h-16 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-brand-slate dark:text-white mb-1">Votre téléchargement démarre !</h3>
+            <p class="text-xs text-brand-slate/65 dark:text-slate-400 mb-5 leading-relaxed">
+                Merci. Si le téléchargement ne démarre pas automatiquement, cliquez sur le bouton ci-dessous.
+            </p>
+            <a id="manual-download-link"
+                href="https://drive.google.com/uc?export=download&id=1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr"
+                target="_blank" rel="noreferrer"
+                class="inline-block bg-brand-slate dark:bg-brand-cream text-white dark:text-brand-darkBg font-bold px-6 py-3 rounded-xl text-sm hover:opacity-90 transition-all shadow-md mb-4">
+                📥 Télécharger WindVoice v1.0 (Windows)
+            </a>
+            <div class="w-full p-3 rounded-xl border border-brand-slate/10 dark:border-white/10 glass-soft">
+                <p class="text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">🔑 Récupérez ensuite votre clé de licence :</p>
+                <a href="https://wa.me/22679967535?text=Bonjour%20M.%20ILBOUDO,%20je%20viens%20d'installer%20l'application%20WindVoice.%20Je%20souhaite%20obtenir%20ma%20cl%C3%A9%20de%20licence%20d'activation%20personnelle."
+                    target="_blank" rel="noreferrer"
+                    class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 shadow">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" class="w-4 h-4 brightness-0 invert">
+                    Demander ma clé à l'administrateur
+                </a>
+            </div>
+        </div>
+
+    </div><!-- /modal-box -->
+</div><!-- /download-modal -->
 
 
+<!-- ════════════════════
+     PAGE PRINCIPALE
+     ════════════════════ -->
+<body class="dark bg-brand-darkBg text-slate-300 transition-colors duration-300 antialiased">
 
-
-<body class="dark bg-brand-darkBg text-slate-300 transition-colors duration-300 antialiased"><!-- Navbar -->
+<!-- Navbar -->
 <header class="fixed top-0 left-0 right-0 z-50 px-4 py-4">
     <nav class="max-w-6xl mx-auto flex items-center justify-between rounded-2xl px-6 py-3 glass-card shadow-glass">
         <div class="text-xl font-extrabold tracking-wider text-brand-slate dark:text-white flex items-center gap-2">
@@ -257,20 +409,20 @@
 
         <div class="flex items-center gap-4 md:gap-6">
             <div class="hidden md:flex space-x-6 text-sm font-medium text-brand-slate/80 dark:text-slate-400">
-                <a href="#features" class="hover:text-brand-slate dark:hover:text-white transition-colors">Fonctionnalités</a>
+                <a href="#features"    class="hover:text-brand-slate dark:hover:text-white transition-colors">Fonctionnalités</a>
                 <a href="#screenshots" class="hover:text-brand-slate dark:hover:text-white transition-colors">Aperçu</a>
-                <a href="#creator" class="hover:text-brand-slate dark:hover:text-white transition-colors">Concepteur</a>
-                <a href="#pricing" class="hover:text-brand-slate dark:hover:text-white transition-colors">Tarifs</a>
+                <a href="#creator"     class="hover:text-brand-slate dark:hover:text-white transition-colors">Concepteur</a>
+                <a href="#pricing"     class="hover:text-brand-slate dark:hover:text-white transition-colors">Tarifs</a>
             </div>
 
             <button id="theme-toggle" type="button"
                 class="inline-flex items-center justify-center w-11 h-11 rounded-xl glass-soft text-brand-slate dark:text-brand-cream hover:scale-105 active:scale-95 transition-transform shadow-sm border border-brand-slate/10 dark:border-white/10"
                 title="Changer de mode" aria-label="Changer de mode">
-                <svg id="theme-toggle-light-icon" class="theme-icon hidden-icon w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"></path>
+                <svg id="theme-toggle-light-icon" class="theme-icon hidden-icon w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"/>
                 </svg>
-                <svg id="theme-toggle-dark-icon" class="theme-icon hidden-icon w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                <svg id="theme-toggle-dark-icon" class="theme-icon hidden-icon w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
                 </svg>
             </button>
         </div>
@@ -292,26 +444,17 @@
     </p>
 
     <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="https://drive.google.com/file/d/1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr/view?usp=drivesdk" class="w-full sm:w-auto bg-brand-slate text-white dark:bg-brand-cream dark:text-brand-darkBg px-8 py-4 rounded-xl font-bold shadow-xl hover:opacity-90 transition-all text-center">
+        <!-- Bouton Hero → ouvre la modale -->
+        <button
+            onclick="openDownloadModal('Hero - Bouton principal')"
+            class="w-full sm:w-auto bg-brand-slate text-white dark:bg-brand-cream dark:text-brand-darkBg px-8 py-4 rounded-xl font-bold shadow-xl hover:opacity-90 transition-all text-center cursor-pointer">
             👉 Télécharger l'application
-        </a>
-        <a href="https://wa.me/22679967535?text=Bonjour%20WindJos,%20je%20souhaite%20en%20savoir%20plus%20sur%20l'application%20WindVoice%20pour%20ma%20PME." target="_blank" rel="noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold bg-white/55 dark:bg-white/8 text-brand-slate dark:text-white border border-brand-slate/15 dark:border-white/10 hover:bg-white/75 dark:hover:bg-white/12 transition-all flex items-center justify-center gap-2 glass-soft">
+        </button>
+        <a href="https://wa.me/22679967535?text=Bonjour%20WindJos,%20je%20souhaite%20en%20savoir%20plus%20sur%20l'application%20WindVoice%20pour%20ma%20PME."
+            target="_blank" rel="noreferrer"
+            class="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold bg-white/55 dark:bg-white/8 text-brand-slate dark:text-white border border-brand-slate/15 dark:border-white/10 hover:bg-white/75 dark:hover:bg-white/12 transition-all flex items-center justify-center gap-2 glass-soft">
             <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" class="w-5 h-5 object-contain">
             Discuter sur WhatsApp
-        </a>
-    </div>
-
-    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="https://wa.me/22679967535?text=Bonjour%20WindJos,%20je%20souhaite%20en%20savoir%20plus%20sur%20l'application%20WindVoice%20pour%20ma%20PME." target="_blank" rel="noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold bg-white/55 dark:bg-white/8 text-brand-slate dark:text-white border border-brand-slate/15 dark:border-white/10 hover:bg-white/75 dark:hover:bg-white/12 transition-all flex items-center justify-center gap-2 glass-soft">
-            <script src="https://cdn.lordicon.com/lordicon.js"></script>
-                <lord-icon
-                    src="https://cdn.lordicon.com/kiqyrejq.json"
-                    trigger="loop"
-                    state="loop-clock"
-                    colors="primary:#109121"
-                    class="w-5 h-5 object-contain">
-                </lord-icon>
-            Vous pouvez demandez une période d'éssai
         </a>
     </div>
 </section>
@@ -327,7 +470,6 @@
                 <h3 class="text-2xl font-bold text-brand-slate dark:text-white">ILBOUDO</h3>
                 <h4 class="text-xl font-medium text-brand-slate/85 dark:text-slate-300">Gueswindé Josué</h4>
                 <p class="text-xs font-mono text-brand-slate/60 dark:text-slate-500 mt-1 uppercase tracking-wider">CEO WindJos</p>
-
                 <p class="mt-4 text-sm text-brand-slate/75 dark:text-slate-400 leading-relaxed">
                     Créatif pluridisciplinaire spécialisé dans le design de marque moderne et le développement d'outils d'optimisation commerciale au Burkina Faso.
                 </p>
@@ -338,12 +480,12 @@
             </div>
         </div>
 
+        <!-- Fiche Technique -->
         <div class="rounded-2xl p-6 glass-card border border-brand-slate/10 dark:border-white/10 shadow-glass">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-slate/10 text-brand-slate dark:bg-white/10 dark:text-brand-cream mb-4">
                 ⚙️ Fiche Technique
             </div>
             <h3 class="text-lg font-bold text-brand-slate dark:text-white mb-4">Spécifications WindVoice</h3>
-
             <div class="space-y-3 text-sm">
                 <div class="flex justify-between gap-4 py-1.5 border-b border-brand-slate/10 dark:border-white/10">
                     <span class="text-brand-slate/65 dark:text-slate-400">Nom de l'application</span>
@@ -408,13 +550,21 @@
     </div>
 
     <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto items-center">
+
+        <!-- Plan Mensuel -->
         <div class="rounded-2xl p-6 text-center glass-card shadow-glass border border-brand-slate/10 dark:border-white/10">
             <h3 class="text-sm font-semibold tracking-wider text-brand-slate/70 dark:text-slate-400 uppercase">Mensuel</h3>
             <div class="mt-4 text-3xl font-black text-brand-slate dark:text-white">6 000 F <span class="text-xs font-normal text-slate-400">/ mois</span></div>
             <p class="mt-2 text-xs text-brand-slate/60 dark:text-slate-500">Parfait pour tester.</p>
-            <a href="https://drive.google.com/file/d/1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr/view?usp=drivesdk" class="mt-6 block w-full bg-brand-slate/10 dark:bg-white/8 text-brand-slate dark:text-white font-medium py-2.5 rounded-xl text-sm hover:opacity-85 transition-all">Sélectionner</a>
+            <!-- Bouton Tarif → ouvre la modale avec le plan renseigné -->
+            <button
+                onclick="openDownloadModal('Plan Mensuel — 6 000 F/mois')"
+                class="mt-6 block w-full bg-brand-slate/10 dark:bg-white/8 text-brand-slate dark:text-white font-medium py-2.5 rounded-xl text-sm hover:opacity-85 transition-all cursor-pointer">
+                Sélectionner
+            </button>
         </div>
 
+        <!-- Plan Annuel (conseillé) -->
         <div class="rounded-2xl p-8 text-center bg-brand-slate text-white dark:bg-brand-cream dark:text-brand-darkBg shadow-xl relative scale-105 border-2 border-brand-slate dark:border-brand-cream">
             <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-0.5 rounded-full shadow">
                 Conseillé
@@ -424,34 +574,49 @@
             <p class="mt-2 text-xs opacity-80 font-cursive text-lg text-white/90 dark:text-brand-darkBg/90">
                 Économisez <span class="underline decoration-wavy">2 000 F</span> sur votre budget annuel
             </p>
-            <a href="https://drive.google.com/file/d/1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr/view?usp=drivesdk" class="mt-6 block w-full bg-white text-brand-slate dark:bg-brand-darkBg dark:text-white font-bold py-3 rounded-xl text-sm shadow-md hover:scale-[1.02] transition-transform">Prendre l'offre annuelle</a>
+            <button
+                onclick="openDownloadModal('Plan Annuel — 70 000 F/an')"
+                class="mt-6 block w-full bg-white text-brand-slate dark:bg-brand-darkBg dark:text-white font-bold py-3 rounded-xl text-sm shadow-md hover:scale-[1.02] transition-transform cursor-pointer">
+                Prendre l'offre annuelle
+            </button>
         </div>
 
+        <!-- Plan 6 Mois -->
         <div class="rounded-2xl p-6 text-center glass-card shadow-glass border border-brand-slate/10 dark:border-white/10">
             <h3 class="text-sm font-semibold tracking-wider text-brand-slate/70 dark:text-slate-400 uppercase">6 Mois</h3>
             <div class="mt-4 text-3xl font-black text-brand-slate dark:text-white">30 000 F <span class="text-xs font-normal text-slate-400">/ semestre</span></div>
             <p class="mt-2 text-xs text-brand-slate/60 dark:text-slate-500">Le juste équilibre de gestion.</p>
-            <a href="https://drive.google.com/file/d/1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr/view?usp=drivesdk" class="mt-6 block w-full bg-brand-slate/10 dark:bg-white/8 text-brand-slate dark:text-white font-medium py-2.5 rounded-xl text-sm hover:opacity-85 transition-all">Sélectionner</a>
+            <button
+                onclick="openDownloadModal('Plan 6 Mois — 30 000 F/semestre')"
+                class="mt-6 block w-full bg-brand-slate/10 dark:bg-white/8 text-brand-slate dark:text-white font-medium py-2.5 rounded-xl text-sm hover:opacity-85 transition-all cursor-pointer">
+                Sélectionner
+            </button>
         </div>
+
     </div>
 </section>
 
-<!-- Download -->
+<!-- Section Download -->
 <section id="download" class="py-12 px-4 max-w-3xl mx-auto mb-16 text-center">
     <div class="rounded-3xl p-8 md:p-10 glass-card border border-brand-slate/15 dark:border-white/10 shadow-xl relative">
         <h2 class="text-2xl md:text-3xl font-bold text-brand-slate dark:text-white mb-2">Installez votre version maintenant</h2>
         <p class="text-sm text-brand-slate/80 dark:text-slate-300 max-w-md mx-auto mb-6">
-            Le téléchargement du package d'installation démarre de manière sécurisée en cliquant sur le lien ci-dessous.
+            Cliquez sur le bouton ci-dessous. Un court formulaire vous sera demandé avant le démarrage du téléchargement.
         </p>
 
         <div class="flex flex-col items-center gap-4">
-            <a href="https://drive.google.com/file/d/1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr/view?usp=drivesdk" class="bg-brand-slate hover:opacity-90 text-white dark:bg-brand-cream dark:text-brand-darkBg px-8 py-3.5 rounded-xl font-bold text-base transition-all shadow-md">
+            <!-- Bouton Download section → ouvre la modale -->
+            <button
+                onclick="openDownloadModal('Section Download — Bouton principal')"
+                class="bg-brand-slate hover:opacity-90 text-white dark:bg-brand-cream dark:text-brand-darkBg px-8 py-3.5 rounded-xl font-bold text-base transition-all shadow-md cursor-pointer">
                 📥 Télécharger WindVoice v1.0 (Windows)
-            </a>
+            </button>
 
             <div class="w-full max-w-md bg-white/55 dark:bg-brand-darkBg/60 p-4 rounded-xl border border-brand-slate/15 dark:border-white/10 mt-4 glass-soft">
                 <p class="text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">🔑 Activation obligatoire de votre licence d'accès :</p>
-                <a href="https://wa.me/22679967535?text=Bonjour%20M.%20ILBOUDO,%20je%20viens%20d'installer%20l'application%20WindVoice.%20Je%20souhaite%20obtenir%20ma%20cl%C3%A9%20de%20licence%20d'activation%20personnelle." target="_blank" rel="noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-md">
+                <a href="https://wa.me/22679967535?text=Bonjour%20M.%20ILBOUDO,%20je%20viens%20d'installer%20l'application%20WindVoice.%20Je%20souhaite%20obtenir%20ma%20cl%C3%A9%20de%20licence%20d'activation%20personnelle."
+                    target="_blank" rel="noreferrer"
+                    class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-md">
                     <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" class="w-4 h-4 brightness-0 invert">
                     Demander ma clé d'activation à l'administrateur
                 </a>
@@ -466,9 +631,15 @@
     <p class="mt-1 font-cursive text-base text-brand-slate dark:text-brand-cream">Édifié avec rigueur et passion par Gueswindé Josué.</p>
 </footer>
 
+
+<!-- ════════════════════════════════════════
+     SCRIPTS
+     ════════════════════════════════════════ -->
 <script>
+
+    /* ─── Thème clair / sombre ─── */
     const themeToggleBtn = document.getElementById('theme-toggle');
-    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const darkIcon  = document.getElementById('theme-toggle-dark-icon');
     const lightIcon = document.getElementById('theme-toggle-light-icon');
     const body = document.body;
 
@@ -479,15 +650,169 @@
         lightIcon.classList.toggle('hidden-icon', isDark);
     }
 
-    const savedTheme = localStorage.getItem('windvoice-theme');
-    const initialIsDark = savedTheme ? savedTheme === 'dark' : true;
-    setTheme(initialIsDark);
+    const savedTheme  = localStorage.getItem('windvoice-theme');
+    const initialDark = savedTheme ? savedTheme === 'dark' : true;
+    setTheme(initialDark);
 
     themeToggleBtn.addEventListener('click', () => {
-        const nextIsDark = !body.classList.contains('dark');
-        setTheme(nextIsDark);
-        localStorage.setItem('windvoice-theme', nextIsDark ? 'dark' : 'light');
+        const nextDark = !body.classList.contains('dark');
+        setTheme(nextDark);
+        localStorage.setItem('windvoice-theme', nextDark ? 'dark' : 'light');
     });
+
+
+    /* ─── Modale : ouverture ─── */
+    /*
+        openDownloadModal(plan) est appelée depuis les boutons.
+        Elle reçoit en paramètre le nom du plan cliqué
+        (ex: "Plan Annuel — 70 000 F/an") et le stocke dans
+        le champ caché du formulaire pour que vous sachiez,
+        dans l'email Formspree, quelle offre intéressait le client.
+    */
+    function openDownloadModal(plan) {
+        // Renseigne le champ caché avec le plan choisi
+        document.getElementById('hidden-plan').value = plan || 'Non précisé';
+
+        // Réinitialise la modale à l'état formulaire (au cas où elle avait déjà servi)
+        resetModal();
+
+        // Affiche la modale
+        document.getElementById('download-modal').classList.add('active');
+
+        // Bloque le scroll de la page derrière
+        document.body.style.overflow = 'hidden';
+    }
+
+    /* ─── Modale : fermeture ─── */
+    function closeModal() {
+        document.getElementById('download-modal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Fermer via bouton ×
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+
+    // Fermer en cliquant sur le fond sombre (hors de la boîte)
+    document.getElementById('download-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // Fermer avec la touche Échap
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    /* ─── Réinitialiser la modale ─── */
+    function resetModal() {
+        // Remet le formulaire visible, cache l'écran de succès
+        document.getElementById('modal-form-section').style.display = '';
+        document.getElementById('modal-success').classList.remove('active');
+
+        // Remet le bouton dans son état normal
+        const btn     = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const spinner = document.getElementById('btn-spinner');
+        btn.disabled      = false;
+        btnText.textContent = '📥 Obtenir mon lien de téléchargement';
+        spinner.classList.add('hidden');
+
+        // Cache le message d'erreur
+        document.getElementById('form-error').classList.add('hidden');
+    }
+
+
+    /* ─── Soumission du formulaire via fetch (AJAX) ─────────────────────
+        Pourquoi fetch() et non une soumission HTML classique ?
+        Parce qu'une soumission classique recharge ou redirige la page,
+        ce qui empêche de déclencher le téléchargement automatiquement
+        juste après. Avec fetch(), on envoie les données en arrière-plan,
+        on attend la confirmation de Formspree, puis on affiche l'écran
+        de succès ET on ouvre le lien Google Drive en même temps.
+    ─────────────────────────────────────────────────────────────────── */
+    document.getElementById('download-form').addEventListener('submit', async function(e) {
+        e.preventDefault(); // Empêche la soumission HTML standard
+
+        const form = this;
+
+        // Validation manuelle des champs obligatoires
+        const required = ['input-nom', 'input-entreprise', 'input-ville', 'input-whatsapp'];
+        let valid = true;
+        required.forEach(id => {
+            if (!document.getElementById(id).value.trim()) valid = false;
+        });
+
+        if (!valid) {
+            document.getElementById('form-error').classList.remove('hidden');
+            return;
+        }
+        document.getElementById('form-error').classList.add('hidden');
+
+        // Passe le bouton en état "chargement"
+        const btn     = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const spinner = document.getElementById('btn-spinner');
+        btn.disabled = true;
+        btnText.textContent = 'Envoi en cours…';
+        spinner.classList.remove('hidden');
+
+        try {
+            // Envoi des données à Formspree
+            /*
+                FormData récupère automatiquement tous les champs
+                du formulaire (name="...") et les envoie à Formspree.
+                Formspree les reçoit et vous les expédie par email.
+            */
+            const response = await fetch(form.action, {
+                method:  'POST',
+                body:    new FormData(form),
+                headers: { 'Accept': 'application/json' }
+                /*
+                    Le header Accept: application/json est obligatoire
+                    pour que Formspree réponde en JSON (et non en HTML).
+                    Sans ça on ne peut pas savoir si l'envoi a réussi.
+                */
+            });
+
+            if (response.ok) {
+                // ✅ Formspree a bien reçu les données
+
+                // 1. Cache le formulaire, affiche l'écran de succès
+                document.getElementById('modal-form-section').style.display = 'none';
+                document.getElementById('modal-success').classList.add('active');
+
+                // 2. Déclenche le téléchargement automatiquement
+                /*
+                    On utilise le lien de téléchargement direct Google Drive.
+                    L'ID du fichier est extrait de votre URL partagée :
+                    https://drive.google.com/file/d/1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr/view
+                    → ID = 1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr
+                    On le passe dans le format ?export=download&id=...
+                    pour forcer le téléchargement direct.
+                */
+                setTimeout(() => {
+                    window.open(
+                        'https://drive.google.com/uc?export=download&id=1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr',
+                        '_blank'
+                    );
+                }, 400); // 400ms de délai pour que l'animation se finisse
+
+            } else {
+                // ❌ Formspree a répondu avec une erreur
+                btn.disabled = false;
+                btnText.textContent = '📥 Obtenir mon lien de téléchargement';
+                spinner.classList.add('hidden');
+                alert('Une erreur est survenue. Vérifiez votre connexion et réessayez.');
+            }
+
+        } catch (err) {
+            // ❌ Erreur réseau (pas de connexion, etc.)
+            btn.disabled = false;
+            btnText.textContent = '📥 Obtenir mon lien de téléchargement';
+            spinner.classList.add('hidden');
+            alert('Impossible d\'envoyer le formulaire. Vérifiez votre connexion Internet.');
+        }
+    });
+
 </script>
 
 </body>
