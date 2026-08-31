@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WindVoice - Gestion Quotidienne PME</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        cursive: ['Caveat', 'cursive'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#F5F2E9',
+                            navy: '#16305C',
+                            slate: '#5B5B67',
+                            darkBg: '#12121A',
+                            darkCard: '#1A1A24',
+                            deepText: '#2E2E38',
+                        }
+                    },
+                    boxShadow: {
+                        glass: '0 10px 30px rgba(0,0,0,0.12)',
+                        glow: '0 0 60px rgba(91, 91, 103, 0.18)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --glass-light: rgba(255, 255, 255, 0.72);
+            --glass-dark: rgba(26, 26, 36, 0.68);
+            --glass-border-light: rgba(22, 48, 92, 0.14);
+            --glass-border-dark: rgba(255, 255, 255, 0.08);
+        }
+
+        html, body { min-height: 100%; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 300ms ease, color 300ms ease;
+        }
+
+        .font-cursive { font-family: 'Caveat', cursive; }
+
+        .glass-card {
+            background: var(--glass-light);
+            backdrop-filter: blur(8px) saturate(140%);
+            -webkit-backdrop-filter: blur(8px) saturate(140%);
+            border: 1px solid var(--glass-border-light);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+        }
+        .dark .glass-card {
+            background: var(--glass-dark);
+            border: 1px solid var(--glass-border-dark);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .glass-soft {
+            background: rgba(245, 242, 233, 0.56);
+            backdrop-filter: blur(8px) saturate(140%);
+            -webkit-backdrop-filter: blur(8px) saturate(140%);
+            border: 1px solid rgba(22, 48, 92, 0.10);
+        }
+        .dark .glass-soft {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .soft-ring {
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        .theme-icon  { display: block; }
+        .hidden-icon { display: none;  }
+
+        .badge-light-text       { color: #2E2E38; }
+        .dark .badge-light-text { color: #12121A; }
+
+        /* 鈹�鈹�鈹� Animations SVG fond 鈹�鈹�鈹� */
+        @keyframes flowLine {
+            0%   { stroke-dashoffset: 1000; opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { stroke-dashoffset: 0; opacity: 0; }
+        }
+        @keyframes floatOrb {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50%       { transform: translateY(-18px) scale(1.04); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.18; }
+            50%       { opacity: 0.38; }
+        }
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        /* 鈹�鈹�鈹� Modale 鈹�鈹�鈹� */
+        #download-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(10, 10, 18, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        #download-modal.active {
+            display: flex;
+        }
+
+        /* Animation d'entr茅e de la bo卯te modale */
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(28px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0)    scale(1);    }
+        }
+        #modal-box {
+            animation: modalIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* Champs du formulaire */
+        .form-input {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(22, 48, 92, 0.24);
+            background: rgba(255,255,255,0.65);
+            color: #2E2E38;
+            font-size: 0.85rem;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input:focus {
+            border-color: #16305C;
+            box-shadow: 0 0 0 3px rgba(22,48,92,0.14);
+        }
+        .dark .form-input {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.12);
+            color: #F5F2E9;
+        }
+        .dark .form-input:focus {
+            border-color: #F5F2E9;
+            box-shadow: 0 0 0 3px rgba(245,242,233,0.10);
+        }
+        .form-input::placeholder { color: rgba(91,91,103,0.45); }
+        .dark .form-input::placeholder { color: rgba(245,242,233,0.30); }
+
+        /* 脡tat de chargement du bouton submit */
+        #submit-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        /* 脡cran de succ猫s */
+        #modal-success { display: none; }
+        #modal-success.active { display: flex; }
+    </style>
+</head>
+
+<!-- 鈹�鈹�鈹� Fond SVG anim茅 鈹�鈹�鈹� -->
+<canvas id="bg-canvas"></canvas>
+<div class="fixed inset-0 z-0 pointer-events-none overflow-hidden" id="svg-layer">
+    <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="lg-light" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"   stop-color="#F5F2E9" stop-opacity="0"/>
+                <stop offset="50%"  stop-color="#9494A8" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#F5F2E9" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="lg-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"   stop-color="#12121A" stop-opacity="0"/>
+                <stop offset="50%"  stop-color="#7C7C96" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#12121A" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="glow-blur">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+        </defs>
+
+        <!-- Silhouette visage fond gauche -->
+        <g opacity="0.055" style="transform-origin:200px 420px; animation: floatOrb 9s ease-in-out infinite;">
+            <path d="M 160 280 C 120 290, 95 330, 100 380 C 105 430, 115 460, 140 490 C 155 510, 170 520, 175 530 C 180 545, 165 555, 155 560 C 200 560, 240 545, 245 520 C 248 505, 235 490, 220 475 C 240 450, 255 420, 258 390 C 265 340, 245 290, 210 275 Z" fill="#5B5B67"/>
+            <path d="M 175 400 C 168 410, 165 420, 168 428 C 172 436, 178 436, 178 436" fill="#5B5B67" opacity="0.6"/>
+        </g>
+
+        <!-- Forme W/V fond droite -->
+        <g opacity="0.05" style="transform-origin:1250px 480px; animation: floatOrb 11s ease-in-out infinite reverse;">
+            <path d="M 1100 340 L 1160 540 L 1220 420 L 1280 540 L 1340 340" fill="none" stroke="#5B5B67" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+
+        <!-- Cercles orbitaux -->
+        <circle cx="720" cy="450" r="310" fill="none" stroke="url(#lg-dark)" stroke-width="0.8" opacity="0.18" style="animation: spinSlow 80s linear infinite; transform-origin:720px 450px;"/>
+        <circle cx="720" cy="450" r="220" fill="none" stroke="url(#lg-dark)" stroke-width="0.5" opacity="0.12" style="animation: spinSlow 60s linear infinite reverse; transform-origin:720px 450px;"/>
+
+        <!-- Lignes traversantes -->
+        <path d="M -50 650 C 200 580, 450 700, 720 620 S 1100 500, 1490 580" fill="none" stroke="url(#lg-dark)" stroke-width="1.2" stroke-dasharray="1400" stroke-dashoffset="1400" opacity="0" style="animation: flowLine 8s ease-in-out 0.5s infinite;"/>
+        <path d="M -50 280 C 300 340, 600 200, 900 300 S 1300 380, 1490 260"  fill="none" stroke="url(#lg-dark)" stroke-width="0.9" stroke-dasharray="1400" stroke-dashoffset="1400" opacity="0" style="animation: flowLine 10s ease-in-out 2s infinite;"/>
+        <path d="M 1490 750 C 1200 680, 900 800, 600 720 S 200 660, -50 730"  fill="none" stroke="url(#lg-dark)" stroke-width="0.7" stroke-dasharray="1400" stroke-dashoffset="1400" opacity="0" style="animation: flowLine 12s ease-in-out 4s infinite;"/>
+        <path d="M -50 120 C 250 180, 550 80, 820 160 S 1200 220, 1490 100"   fill="none" stroke="url(#lg-dark)" stroke-width="0.6" stroke-dasharray="1200" stroke-dashoffset="1200" opacity="0" style="animation: flowLine 9s ease-in-out 6s infinite;"/>
+
+        <!-- Points orbitaux -->
+        <circle cx="400"  cy="200" r="1.5" fill="#9494A8" opacity="0.35" style="animation: pulseGlow 4s ease-in-out infinite;"/>
+        <circle cx="1050" cy="150" r="1"   fill="#9494A8" opacity="0.28" style="animation: pulseGlow 5s ease-in-out 1s infinite;"/>
+        <circle cx="200"  cy="700" r="1.2" fill="#9494A8" opacity="0.30" style="animation: pulseGlow 6s ease-in-out 2s infinite;"/>
+        <circle cx="1300" cy="600" r="1.8" fill="#9494A8" opacity="0.25" style="animation: pulseGlow 4.5s ease-in-out 0.5s infinite;"/>
+        <circle cx="680"  cy="850" r="1"   fill="#9494A8" opacity="0.20" style="animation: pulseGlow 7s ease-in-out 3s infinite;"/>
+
+        <ellipse cx="720" cy="450" rx="180" ry="160" fill="none" stroke="#5B5B67" stroke-width="0.4" opacity="0.08" style="animation: pulseGlow 8s ease-in-out infinite;"/>
+    </svg>
+</div>
+
+
+<!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+     MODALE FORMULAIRE AVANT T脡L脡CHARGEMENT
+     鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+<div id="download-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+    <!-- Bo卯te modale -->
+    <div id="modal-box" class="relative w-full max-w-md rounded-3xl glass-card border border-brand-navy/15 dark:border-white/10 shadow-2xl overflow-hidden">
+
+        <!-- Bouton fermer -->
+        <button id="modal-close"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-brand-navy/60 dark:text-slate-400 hover:text-brand-navy dark:hover:text-white hover:bg-brand-navy/10 dark:hover:bg-white/10 transition-all"
+            aria-label="Fermer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+
+        <!-- 鈹�鈹� Formulaire 鈹�鈹� -->
+        <div id="modal-form-section" class="p-7">
+            <div class="mb-5">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-navy/10 text-brand-navy dark:bg-white/10 dark:text-brand-cream mb-3">
+                    馃摜 T茅l茅chargement WindVoice
+                </div>
+                <h2 id="modal-title" class="text-xl font-bold text-brand-navy dark:text-white">Une derni猫re 茅tape</h2>
+                <p class="text-xs text-brand-navy/65 dark:text-slate-400 mt-1">
+                    Remplissez ce formulaire pour obtenir votre lien de t茅l茅chargement. Vos informations restent confidentielles.
+                </p>
+            </div>
+
+            <!--
+                鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+                ACTION FORMSPREE 鈥� 脡TAPES DE CONFIGURATION :
+
+                1. Allez sur https://formspree.io et cr茅ez un compte gratuit
+                2. Cliquez "New Form", donnez-lui un nom (ex: "WindVoice Downloads")
+                3. Formspree vous g茅n猫re une URL de ce type :
+                       https://formspree.io/f/XXXXXXXX
+                4. Remplacez "VOTRE_ID_FORMSPREE" ci-dessous par votre vrai ID
+                   Exemple : action="https://formspree.io/f/xpwzgkrd"
+
+                C'est TOUT. Formspree re莽oit les donn茅es et vous les envoie
+                par email 脿 l'adresse li茅e 脿 votre compte.
+                鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+            -->
+            <form
+                id="download-form"
+                action="https://formspree.io/f/xykayqlb"
+                method="POST"
+                novalidate>
+
+                <!-- Champ cach茅 : plan s茅lectionn茅 (rempli automatiquement par JS) -->
+                <input type="hidden" name="plan_selectionne" id="hidden-plan" value="Non pr茅cis茅">
+
+                <!-- Champ cach茅 anti-spam Formspree -->
+                <input type="text" name="_gotcha" style="display:none">
+
+                <!-- Redirection apr猫s envoi : on reste sur la page (g茅r茅 en JS) -->
+                <!-- On utilise fetch() au lieu d'une soumission classique pour
+                     d茅clencher le t茅l茅chargement juste apr猫s l'envoi. -->
+
+                <div class="space-y-3">
+
+                    <!-- Nom complet -->
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-navy/80 dark:text-slate-300 mb-1" for="input-nom">
+                            Nom complet <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="input-nom" name="nom_complet"
+                            class="form-input" placeholder="Ex : ILBOUDO Josu茅" required autocomplete="name">
+                    </div>
+
+                    <!-- Nom de l'entreprise -->
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-navy/80 dark:text-slate-300 mb-1" for="input-entreprise">
+                            Nom de l'entreprise <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="input-entreprise" name="entreprise"
+                            class="form-input" placeholder="Ex : ImprimPro" required autocomplete="organization">
+                    </div>
+
+                    <!-- Ville -->
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-navy/80 dark:text-slate-300 mb-1" for="input-ville">
+                            Ville <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="input-ville" name="ville"
+                            class="form-input" placeholder="Ex : Ouagadougou, Bobo-Dioulasso鈥�" required>
+                    </div>
+
+                    <!-- Num茅ro WhatsApp -->
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-navy/80 dark:text-slate-300 mb-1" for="input-whatsapp">
+                            Num茅ro WhatsApp <span class="text-red-500">*</span>
+                        </label>
+                        <input type="tel" id="input-whatsapp" name="whatsapp"
+                            class="form-input" placeholder="Ex : +226 70 00 00 00" required autocomplete="tel">
+                    </div>
+
+                    <!-- Email (optionnel) -->
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-navy/80 dark:text-slate-300 mb-1" for="input-email">
+                            Email <span class="text-brand-navy/40 dark:text-slate-500 font-normal">(facultatif)</span>
+                        </label>
+                        <input type="email" id="input-email" name="email"
+                            class="form-input" placeholder="votre@email.com" autocomplete="email">
+                    </div>
+
+                </div>
+
+                <!-- Message d'erreur de validation -->
+                <p id="form-error" class="hidden mt-3 text-xs text-red-500 font-medium">
+                    鈿狅笍 Veuillez remplir tous les champs obligatoires.
+                </p>
+
+                <!-- Bouton submit -->
+                <button type="submit" id="submit-btn"
+                    class="mt-5 w-full bg-brand-navy dark:bg-brand-cream text-white dark:text-brand-darkBg font-bold py-3 rounded-xl text-sm hover:opacity-90 transition-all shadow-md flex items-center justify-center gap-2">
+                    <span id="btn-text">馃摜 Obtenir mon lien de t茅l茅chargement</span>
+                    <svg id="btn-spinner" class="hidden w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                    </svg>
+                </button>
+
+                <p class="mt-3 text-center text-[10px] text-brand-navy/40 dark:text-slate-600">
+                    馃敀 Vos donn茅es servent uniquement 脿 la gestion des licences WindVoice.
+                </p>
+
+            </form>
+        </div>
+
+        <!-- 鈹�鈹� 脡cran de succ猫s (affich茅 apr猫s envoi r茅ussi) 鈹�鈹� -->
+        <div id="modal-success" class="p-7 flex-col items-center text-center">
+            <div class="w-16 h-16 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-brand-navy dark:text-white mb-1">Votre t茅l茅chargement d茅marre !</h3>
+            <p class="text-xs text-brand-navy/65 dark:text-slate-400 mb-5 leading-relaxed">
+                Merci. Si le t茅l茅chargement ne d茅marre pas automatiquement, cliquez sur le bouton ci-dessous.
+            </p>
+            <a id="manual-download-link"
+                href="https://drive.google.com/uc?export=download&id=1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr"
+                target="_blank" rel="noreferrer"
+                class="inline-block bg-brand-navy dark:bg-brand-cream text-white dark:text-brand-darkBg font-bold px-6 py-3 rounded-xl text-sm hover:opacity-90 transition-all shadow-md mb-4">
+                馃摜 T茅l茅charger WindVoice v1.0 (Windows)
+            </a>
+            <div class="w-full p-3 rounded-xl border border-brand-navy/10 dark:border-white/10 glass-soft">
+                <p class="text-xs font-semibold text-brand-navy dark:text-slate-300 mb-2">馃攽 R茅cup茅rez ensuite votre cl茅 de licence :</p>
+                <a href="https://wa.me/22679967535?text=Bonjour%20M.%20ILBOUDO,%20je%20viens%20d'installer%20l'application%20WindVoice.%20Je%20souhaite%20obtenir%20ma%20cl%C3%A9%20de%20licence%20d'activation%20personnelle."
+                    target="_blank" rel="noreferrer"
+                    class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 shadow">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" class="w-4 h-4 brightness-0 invert">
+                    Demander ma cl茅 脿 l'administrateur
+                </a>
+            </div>
+        </div>
+
+    </div><!-- /modal-box -->
+</div><!-- /download-modal -->
+
+
+<!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+     PAGE PRINCIPALE
+     鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+<body class="dark bg-brand-darkBg text-slate-300 transition-colors duration-300 antialiased">
+
+<!-- Navbar -->
+<header class="fixed top-0 left-0 right-0 z-50 px-4 py-4">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between rounded-2xl px-6 py-3 glass-card shadow-glass">
+        <div class="text-xl font-extrabold tracking-wider text-brand-navy dark:text-white flex items-center gap-2">
+            <span class="inline-block w-3 h-3 rounded-full bg-brand-navy dark:bg-brand-cream animate-pulse"></span>
+            WINDVOICE
+        </div>
+
+        <div class="flex items-center gap-4 md:gap-6">
+            <div class="hidden md:flex space-x-6 text-sm font-medium text-brand-navy/80 dark:text-slate-400">
+                <a href="#features"    class="hover:text-brand-navy dark:hover:text-white transition-colors">Fonctionnalit茅s</a>
+                <a href="#screenshots" class="hover:text-brand-navy dark:hover:text-white transition-colors">Aper莽u</a>
+                <a href="#creator"     class="hover:text-brand-navy dark:hover:text-white transition-colors">脡quipe</a>
+                <a href="#pricing"     class="hover:text-brand-navy dark:hover:text-white transition-colors">Tarifs</a>
+            </div>
+
+            <button id="theme-toggle" type="button"
+                class="inline-flex items-center justify-center w-11 h-11 rounded-xl glass-soft text-brand-navy dark:text-brand-cream hover:scale-105 active:scale-95 transition-transform shadow-sm border border-brand-navy/10 dark:border-white/10"
+                title="Changer de mode" aria-label="Changer de mode">
+                <svg id="theme-toggle-light-icon" class="theme-icon hidden-icon w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"/>
+                </svg>
+                <svg id="theme-toggle-dark-icon" class="theme-icon hidden-icon w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- Hero -->
+<section class="relative pt-36 pb-20 px-4 max-w-5xl mx-auto text-center bg-brand-cream dark:bg-brand-darkBg transition-colors duration-300 overflow-hidden">
+    <div class="absolute top-20 left-1/2 -translate-x-1/2 -z-10 w-[320px] h-[320px] bg-brand-navy/10 dark:bg-brand-slate/25 blur-[110px] rounded-full"></div>
+    <div class="absolute -bottom-16 right-0 -z-10 w-[260px] h-[260px] bg-white/30 dark:bg-white/5 blur-[120px] rounded-full"></div>
+
+    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-brand-navy dark:text-white leading-tight">
+        Centralisez toute votre entreprise, <br>
+        <span class="font-cursive text-4xl md:text-6xl text-brand-navy dark:text-brand-cream font-normal tracking-wide lowercase px-2 rounded-xl bg-white/35 dark:bg-white/5 border border-white/40 dark:border-white/10">au m锚me endroit</span>, sans tracas.
+    </h1>
+
+    <p class="mt-6 text-base md:text-lg text-brand-navy/85 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
+        WindVoice r茅unit vos clients, votre stock, vos finances et vos factures dans un seul outil 鈥� fini le cahier et les informations 茅parpill茅es. Une vue claire, pour d茅cider plus vite, avec plus de certitude.
+    </p>
+
+    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <!-- Bouton Hero 鈫� ouvre la modale -->
+        <button
+            onclick="openDownloadModal('Hero - Bouton principal')"
+            class="w-full sm:w-auto bg-brand-navy text-white dark:bg-brand-cream dark:text-brand-darkBg px-8 py-4 rounded-xl font-bold shadow-xl hover:opacity-90 transition-all text-center cursor-pointer">
+            馃憠 T茅l茅charger l'application
+        </button>
+        <a href="https://wa.me/22679967535?text=Bonjour%20WindJos,%20je%20souhaite%20en%20savoir%20plus%20sur%20l'application%20WindVoice%20pour%20ma%20PME."
+            target="_blank" rel="noreferrer"
+            class="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold bg-white/55 dark:bg-white/8 text-brand-navy dark:text-white border border-brand-navy/15 dark:border-white/10 hover:bg-white/75 dark:hover:bg-white/12 transition-all flex items-center justify-center gap-2 glass-soft">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" class="w-5 h-5 object-contain">
+            Discuter sur WhatsApp
+        </a>
+    </div>
+</section>
+
+<!-- 脡quipe -->
+<section id="creator" class="py-12 px-4 max-w-4xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="rounded-2xl p-6 glass-card shadow-glass flex flex-col justify-between">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-navy/10 text-brand-navy dark:bg-white/10 dark:text-brand-cream mb-4">
+                    馃懃 L'茅quipe
+                </div>
+                <h3 class="text-2xl font-bold text-brand-navy dark:text-white">ILBOUDO</h3>
+                <h4 class="text-xl font-medium text-brand-navy/85 dark:text-slate-300">Gueswind茅 Josu茅</h4>
+                <p class="text-xs font-mono text-brand-navy/60 dark:text-slate-500 mt-1 uppercase tracking-wider">CEO WindJos</p>
+                <p class="mt-4 text-sm text-brand-navy/75 dark:text-slate-400 leading-relaxed">
+                    R茅daction cahier des charges WindVoice - Brainstorming lead - Suivi produits.
+                </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-brand-navy/10 dark:border-white/10 flex items-center justify-between">
+                <span class="text-xs text-brand-navy/50 dark:text-slate-500 font-medium">Produit</span>
+                <span class="font-cursive text-xl text-brand-navy dark:text-brand-cream">WindJos</span>
+            </div>
+        </div>
+
+        <div class="rounded-2xl p-6 glass-card shadow-glass flex flex-col justify-between">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-navy/10 text-brand-navy dark:bg-white/10 dark:text-brand-cream mb-4">
+                    馃懃 L'茅quipe
+                </div>
+                <h3 class="text-2xl font-bold text-brand-navy dark:text-white">Germain</h3>
+                <h4 class="text-xl font-medium text-brand-navy/85 dark:text-slate-300">TRAOR脡</h4>
+                <p class="text-xs font-mono text-brand-navy/60 dark:text-slate-500 mt-1 uppercase tracking-wider">Ing茅nieur Logiciel</p>
+                <p class="mt-4 text-sm text-brand-navy/75 dark:text-slate-400 leading-relaxed">
+                    Architecture et d茅veloppement de WindVoice, enti猫rement pens茅e et construite avec les meilleures technologies r茅centes pour 锚tre robuste et moderne.
+                </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-brand-navy/10 dark:border-white/10 flex items-center justify-between">
+                <span class="text-xs text-brand-navy/50 dark:text-slate-500 font-medium">Technique</span>
+                <span class="font-cursive text-xl text-brand-navy dark:text-brand-cream">Django</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fiche Technique -->
+    <div class="mt-6 rounded-2xl p-6 glass-card border border-brand-navy/10 dark:border-white/10 shadow-glass">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-navy/10 text-brand-navy dark:bg-white/10 dark:text-brand-cream mb-4">
+            鈿欙笍 Fiche Technique
+        </div>
+        <h3 class="text-lg font-bold text-brand-navy dark:text-white mb-4">Sp茅cifications WindVoice</h3>
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+            <div class="flex justify-between gap-4 py-1.5 border-b border-brand-navy/10 dark:border-white/10">
+                <span class="text-brand-navy/65 dark:text-slate-400">Nom de l'application</span>
+                <span class="font-semibold text-brand-navy dark:text-white text-right">WindVoice</span>
+            </div>
+            <div class="flex justify-between gap-4 py-1.5 border-b border-brand-navy/10 dark:border-white/10">
+                <span class="text-brand-navy/65 dark:text-slate-400">Version</span>
+                <span class="font-mono text-brand-navy dark:text-white">v1.0.0</span>
+            </div>
+            <div class="flex justify-between gap-4 py-1.5 border-b border-brand-navy/10 dark:border-white/10">
+                <span class="text-brand-navy/65 dark:text-slate-400">Export par d茅faut</span>
+                <span class="font-mono text-xs text-brand-navy dark:text-white text-right">Rapport[date][nomentreprise].pdf</span>
+            </div>
+            <div class="flex justify-between gap-4 py-1.5 border-b border-brand-navy/10 dark:border-white/10">
+                <span class="text-brand-navy/65 dark:text-slate-400">Interface</span>
+                <span class="text-brand-navy dark:text-white text-right">Minimaliste <span class="font-cursive text-sm text-brand-navy dark:text-brand-cream lowercase">(barre masquable)</span></span>
+            </div>
+            <div class="flex justify-between gap-4 py-1.5">
+                <span class="text-brand-navy/65 dark:text-slate-400">S茅curit茅</span>
+                <span class="text-emerald-600 dark:text-emerald-400 font-medium text-right">Cl茅 de licence unique</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Screenshots -->
+<section id="screenshots" class="py-12 px-4 max-w-5xl mx-auto">
+    <div class="text-center mb-10">
+        <h2 class="text-2xl md:text-3xl font-bold text-brand-navy dark:text-white">Une clart茅 visuelle absolue</h2>
+        <p class="text-sm text-brand-navy/65 dark:text-slate-400 mt-1">Con莽ue pour minimiser la charge mentale du suivi quotidien.</p>
+    </div>
+
+    <div class="rounded-3xl p-3 shadow-xl max-w-4xl mx-auto mb-8 glass-card border border-brand-navy/10 dark:border-white/10">
+        <div class="w-full rounded-2xl bg-brand-navy/10 dark:bg-slate-950 aspect-[16/9] flex items-center justify-center text-brand-navy/45 dark:text-slate-600 border border-brand-navy/5 relative overflow-hidden"
+            style="background-image:url('assets/dashboard.png'); background-size: cover; background-position: center;">
+            <span class="text-xs font-mono tracking-widest" style="
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                border-radius: 12px;
+                padding: 20px;
+                ">[ CAPTURE : TABLEAU DE BORD PRINCIPAL ]</span>
+            <div class="absolute bottom-3 left-3 px-3 py-1 rounded-lg text-[11px] bg-white/85 dark:bg-brand-darkCard text-brand-navy dark:text-slate-300 shadow">
+                Vue 茅pur茅e en plein 茅cran
+            </div>
+        </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+        <div class="rounded-2xl p-3 glass-card border border-brand-navy/10 dark:border-white/10">
+            <div class="w-full rounded-xl bg-brand-navy/10 dark:bg-slate-950 aspect-[16/10] flex items-center justify-center text-brand-navy/45 dark:text-slate-600"
+               style="background-image:url('assets/clients.png'); background-size: cover; background-position: center;">
+                <span class="text-xs font-mono" style="
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                border-radius: 12px;
+                padding: 20px;
+                ">[ CAPTURE : GESTION CLIENTS ]</span>
+            </div>
+        </div>
+        <div class="rounded-2xl p-3 glass-card border border-brand-navy/10 dark:border-white/10">
+            <div class="w-full rounded-xl bg-brand-navy/10 dark:bg-slate-950 aspect-[16/10] flex items-center justify-center text-brand-navy/45 dark:text-slate-600"
+               style="background-image:url('assets/stock.png'); background-size: cover; background-position: center;">
+                <span class="text-xs font-mono" style="
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                border-radius: 12px;
+                padding: 20px;
+                ">[ CAPTURE : SUIVI DU STOCK ]</span>
+            </div>
+        </div>
+        <div class="rounded-2xl p-3 glass-card border border-brand-navy/10 dark:border-white/10">
+            <div class="w-full rounded-xl bg-brand-navy/10 dark:bg-slate-950 aspect-[16/10] flex items-center justify-center text-brand-navy/45 dark:text-slate-600"
+               style="background-image:url('assets/facture.png'); background-size: cover; background-position: center;">
+                <span class="text-xs font-mono" style="
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                border-radius: 12px;
+                padding: 20px;
+                ">[ CAPTURE : FACTURATION ]</span>
+            </div>
+        </div>
+        <div class="rounded-2xl p-3 glass-card border border-brand-navy/10 dark:border-white/10">
+            <div class="w-full rounded-xl bg-brand-navy/10 dark:bg-slate-950 aspect-[16/10] flex items-center justify-center text-brand-navy/45 dark:text-slate-600"
+               style="background-image:url('assets/user.png'); background-size: cover; background-position: center;">
+                <span class="text-xs font-mono" style="
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                border-radius: 12px;
+                padding: 20px;
+                ">[ CAPTURE : MULTI-POSTE & R脭LES ]</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tarifs -->
+<section id="pricing" class="py-16 px-4 max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+        <h2 class="text-2xl md:text-3xl font-bold text-brand-navy dark:text-white">Plans de licence flexibles</h2>
+        <p class="text-sm text-brand-navy/65 dark:text-slate-400 mt-1">S茅lectionnez la formule id茅ale pour la p茅rennit茅 de votre business.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto items-center">
+
+        <!-- Plan Mensuel -->
+        <div class="rounded-2xl p-6 text-center glass-card shadow-glass border border-brand-navy/10 dark:border-white/10">
+            <h3 class="text-sm font-semibold tracking-wider text-brand-navy/70 dark:text-slate-400 uppercase">Mensuel</h3>
+            <div class="mt-4 text-3xl font-black text-brand-navy dark:text-white">6 000 F <span class="text-xs font-normal text-slate-400">/ mois</span></div>
+            <p class="mt-2 text-xs text-brand-navy/60 dark:text-slate-500">Parfait pour tester.</p>
+            <!-- Bouton Tarif 鈫� ouvre la modale avec le plan renseign茅 -->
+            <button
+                onclick="openDownloadModal('Plan Mensuel 鈥� 6 000 F/mois')"
+                class="mt-6 block w-full bg-brand-navy/10 dark:bg-white/8 text-brand-navy dark:text-white font-medium py-2.5 rounded-xl text-sm hover:opacity-85 transition-all cursor-pointer">
+                S茅lectionner
+            </button>
+        </div>
+
+        <!-- Plan Annuel (conseill茅) -->
+        <div class="rounded-2xl p-8 text-center bg-brand-navy text-white dark:bg-brand-cream dark:text-brand-darkBg shadow-xl relative scale-105 border-2 border-brand-navy dark:border-brand-cream">
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-0.5 rounded-full shadow">
+                Conseill茅
+            </div>
+            <h3 class="text-base font-bold tracking-wider uppercase opacity-90">Annuel</h3>
+            <div class="mt-4 text-4xl font-black">70 000 F <span class="text-xs font-normal opacity-70">/ an</span></div>
+            <p class="mt-2 text-xs opacity-80 font-cursive text-lg text-white/90 dark:text-brand-darkBg/90">
+                脡conomisez <span class="underline decoration-wavy">2 000 F</span> sur votre budget annuel
+            </p>
+            <button
+                onclick="openDownloadModal('Plan Annuel 鈥� 70 000 F/an')"
+                class="mt-6 block w-full bg-white text-brand-navy dark:bg-brand-darkBg dark:text-white font-bold py-3 rounded-xl text-sm shadow-md hover:scale-[1.02] transition-transform cursor-pointer">
+                Prendre l'offre annuelle
+            </button>
+        </div>
+
+        <!-- Plan 6 Mois -->
+        <div class="rounded-2xl p-6 text-center glass-card shadow-glass border border-brand-navy/10 dark:border-white/10">
+            <h3 class="text-sm font-semibold tracking-wider text-brand-navy/70 dark:text-slate-400 uppercase">6 Mois</h3>
+            <div class="mt-4 text-3xl font-black text-brand-navy dark:text-white">30 000 F <span class="text-xs font-normal text-slate-400">/ semestre</span></div>
+            <p class="mt-2 text-xs text-brand-navy/60 dark:text-slate-500">Le juste 茅quilibre de gestion.</p>
+            <button
+                onclick="openDownloadModal('Plan 6 Mois 鈥� 30 000 F/semestre')"
+                class="mt-6 block w-full bg-brand-navy/10 dark:bg-white/8 text-brand-navy dark:text-white font-medium py-2.5 rounded-xl text-sm hover:opacity-85 transition-all cursor-pointer">
+                S茅lectionner
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- Section Download -->
+<section id="download" class="py-12 px-4 max-w-3xl mx-auto mb-16 text-center">
+    <div class="rounded-3xl p-8 md:p-10 glass-card border border-brand-navy/15 dark:border-white/10 shadow-xl relative">
+        <h2 class="text-2xl md:text-3xl font-bold text-brand-navy dark:text-white mb-2">Installez votre version maintenant</h2>
+        <p class="text-sm text-brand-navy/80 dark:text-slate-300 max-w-md mx-auto mb-6">
+            Cliquez sur le bouton ci-dessous. Un court formulaire vous sera demand茅 avant le d茅marrage du t茅l茅chargement.
+        </p>
+
+        <div class="flex flex-col items-center gap-4">
+            <!-- Bouton Download section 鈫� ouvre la modale -->
+            <button
+                onclick="openDownloadModal('Section Download 鈥� Bouton principal')"
+                class="bg-brand-navy hover:opacity-90 text-white dark:bg-brand-cream dark:text-brand-darkBg px-8 py-3.5 rounded-xl font-bold text-base transition-all shadow-md cursor-pointer">
+                馃摜 T茅l茅charger WindVoice v1.0 (Windows)
+            </button>
+
+            <div class="w-full max-w-md bg-white/55 dark:bg-brand-darkBg/60 p-4 rounded-xl border border-brand-navy/15 dark:border-white/10 mt-4 glass-soft">
+                <p class="text-xs font-semibold text-brand-navy dark:text-slate-300 mb-2">馃攽 Activation obligatoire de votre licence d'acc猫s :</p>
+                <a href="https://wa.me/22679967535?text=Bonjour%20M.%20ILBOUDO,%20je%20viens%20d'installer%20l'application%20WindVoice.%20Je%20souhaite%20obtenir%20ma%20cl%C3%A9%20de%20licence%20d'activation%20personnelle."
+                    target="_blank" rel="noreferrer"
+                    class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-md">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" class="w-4 h-4 brightness-0 invert">
+                    Demander ma cl茅 d'activation 脿 l'administrateur
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-brand-navy/10 dark:border-white/10 py-8 text-center text-xs text-brand-navy/60 dark:text-slate-500">
+    <p>&copy; 2026 <span class="font-semibold">WindJos</span>. Tous droits r茅serv茅s.</p>
+</footer>
+
+
+<!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+     SCRIPTS
+     鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲 -->
+<script>
+
+    /* 鈹�鈹�鈹� Th猫me clair / sombre 鈹�鈹�鈹� */
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon  = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const body = document.body;
+
+    function setTheme(isDark) {
+        body.classList.toggle('dark', isDark);
+        body.style.backgroundColor = isDark ? '#12121A' : '#F5F2E9';
+        darkIcon.classList.toggle('hidden-icon', !isDark);
+        lightIcon.classList.toggle('hidden-icon', isDark);
+    }
+
+    const savedTheme  = localStorage.getItem('windvoice-theme');
+    const initialDark = savedTheme ? savedTheme === 'dark' : true;
+    setTheme(initialDark);
+
+    themeToggleBtn.addEventListener('click', () => {
+        const nextDark = !body.classList.contains('dark');
+        setTheme(nextDark);
+        localStorage.setItem('windvoice-theme', nextDark ? 'dark' : 'light');
+    });
+
+
+    /* 鈹�鈹�鈹� Modale : ouverture 鈹�鈹�鈹� */
+    /*
+        openDownloadModal(plan) est appel茅e depuis les boutons.
+        Elle re莽oit en param猫tre le nom du plan cliqu茅
+        (ex: "Plan Annuel 鈥� 70 000 F/an") et le stocke dans
+        le champ cach茅 du formulaire pour que vous sachiez,
+        dans l'email Formspree, quelle offre int茅ressait le client.
+    */
+    function openDownloadModal(plan) {
+        // Renseigne le champ cach茅 avec le plan choisi
+        document.getElementById('hidden-plan').value = plan || 'Non pr茅cis茅';
+
+        // R茅initialise la modale 脿 l'茅tat formulaire (au cas o霉 elle avait d茅j脿 servi)
+        resetModal();
+
+        // Affiche la modale
+        document.getElementById('download-modal').classList.add('active');
+
+        // Bloque le scroll de la page derri猫re
+        document.body.style.overflow = 'hidden';
+    }
+
+    /* 鈹�鈹�鈹� Modale : fermeture 鈹�鈹�鈹� */
+    function closeModal() {
+        document.getElementById('download-modal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Fermer via bouton 脳
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+
+    // Fermer en cliquant sur le fond sombre (hors de la bo卯te)
+    document.getElementById('download-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // Fermer avec la touche 脡chap
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    /* 鈹�鈹�鈹� R茅initialiser la modale 鈹�鈹�鈹� */
+    function resetModal() {
+        // Remet le formulaire visible, cache l'茅cran de succ猫s
+        document.getElementById('modal-form-section').style.display = '';
+        document.getElementById('modal-success').classList.remove('active');
+
+        // Remet le bouton dans son 茅tat normal
+        const btn     = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const spinner = document.getElementById('btn-spinner');
+        btn.disabled      = false;
+        btnText.textContent = '馃摜 Obtenir mon lien de t茅l茅chargement';
+        spinner.classList.add('hidden');
+
+        // Cache le message d'erreur
+        document.getElementById('form-error').classList.add('hidden');
+    }
+
+
+    /* 鈹�鈹�鈹� Soumission du formulaire via fetch (AJAX) 鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�
+        Pourquoi fetch() et non une soumission HTML classique ?
+        Parce qu'une soumission classique recharge ou redirige la page,
+        ce qui emp锚che de d茅clencher le t茅l茅chargement automatiquement
+        juste apr猫s. Avec fetch(), on envoie les donn茅es en arri猫re-plan,
+        on attend la confirmation de Formspree, puis on affiche l'茅cran
+        de succ猫s ET on ouvre le lien Google Drive en m锚me temps.
+    鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹�鈹� */
+    document.getElementById('download-form').addEventListener('submit', async function(e) {
+        e.preventDefault(); // Emp锚che la soumission HTML standard
+
+        const form = this;
+
+        // Validation manuelle des champs obligatoires
+        const required = ['input-nom', 'input-entreprise', 'input-ville', 'input-whatsapp'];
+        let valid = true;
+        required.forEach(id => {
+            if (!document.getElementById(id).value.trim()) valid = false;
+        });
+
+        if (!valid) {
+            document.getElementById('form-error').classList.remove('hidden');
+            return;
+        }
+        document.getElementById('form-error').classList.add('hidden');
+
+        // Passe le bouton en 茅tat "chargement"
+        const btn     = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const spinner = document.getElementById('btn-spinner');
+        btn.disabled = true;
+        btnText.textContent = 'Envoi en cours鈥�';
+        spinner.classList.remove('hidden');
+
+        try {
+            // Envoi des donn茅es 脿 Formspree
+            /*
+                FormData r茅cup猫re automatiquement tous les champs
+                du formulaire (name="...") et les envoie 脿 Formspree.
+                Formspree les re莽oit et vous les exp茅die par email.
+            */
+            const response = await fetch(form.action, {
+                method:  'POST',
+                body:    new FormData(form),
+                headers: { 'Accept': 'application/json' }
+                /*
+                    Le header Accept: application/json est obligatoire
+                    pour que Formspree r茅ponde en JSON (et non en HTML).
+                    Sans 莽a on ne peut pas savoir si l'envoi a r茅ussi.
+                */
+            });
+
+            if (response.ok) {
+                // 鉁� Formspree a bien re莽u les donn茅es
+
+                // 1. Cache le formulaire, affiche l'茅cran de succ猫s
+                document.getElementById('modal-form-section').style.display = 'none';
+                document.getElementById('modal-success').classList.add('active');
+
+                // 2. D茅clenche le t茅l茅chargement automatiquement
+                /*
+                    On utilise le lien de t茅l茅chargement direct Google Drive.
+                    L'ID du fichier est extrait de votre URL partag茅e :
+                    https://drive.google.com/file/d/1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr/view
+                    鈫� ID = 1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr
+                    On le passe dans le format ?export=download&id=...
+                    pour forcer le t茅l茅chargement direct.
+                */
+                setTimeout(() => {
+                    window.open(
+                        'https://drive.google.com/uc?export=download&id=1JoMp4m26PR5JGQFPSo51rRMPZPpuQTRr',
+                        '_blank'
+                    );
+                }, 400); // 400ms de d茅lai pour que l'animation se finisse
+
+            } else {
+                // 鉂� Formspree a r茅pondu avec une erreur
+                btn.disabled = false;
+                btnText.textContent = '馃摜 Obtenir mon lien de t茅l茅chargement';
+                spinner.classList.add('hidden');
+                alert('Une erreur est survenue. V茅rifiez votre connexion et r茅essayez.');
+            }
+
+        } catch (err) {
+            // 鉂� Erreur r茅seau (pas de connexion, etc.)
+            btn.disabled = false;
+            btnText.textContent = '馃摜 Obtenir mon lien de t茅l茅chargement';
+            spinner.classList.add('hidden');
+            alert('Impossible d\'envoyer le formulaire. V茅rifiez votre connexion Internet.');
+        }
+    });
+
+</script>
+
+</body>
+</html>
